@@ -658,85 +658,23 @@ async function unlockForm() {
 
 
 <!-- ================================================================== -->
-<!-- SECTION 10: SPECIAL ISSUES & CLIENT QUESTIONS                      -->
+<!-- SECTION 10: QUESTIONS, CONCERNS & ADDITIONAL INFORMATION           -->
 <!-- ================================================================== -->
 <div class="step" data-step="10" style="display:none;">
   <div class="bg-white shadow-md rounded-lg overflow-hidden mb-6">
     <div class="bg-[#1e3a5f] text-white px-6 py-3 rounded-t-lg font-bold text-lg">
-      Section 10: Special Issues &amp; Client Questions
+      Section 10: Questions, Concerns, or Additional Information for Your Attorney
     </div>
     <div class="p-6 space-y-6">
 
       <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">
-        Address the &ldquo;out of the box&rdquo; items referenced in Karen&rsquo;s email (Questions A, B, C, and D) and any additional special provisions. State each question exactly as discussed or written, and provide any additional context or background that will assist in drafting.
+        Use this space to note anything not covered above &mdash; questions you'd like to discuss, concerns about the agreement, additional context, or anything else you'd like your attorney to know.
       </div>
 
-      <!-- 10A. Client's Question A -->
       <div>
-        <h3 class="text-[#2c5282] font-semibold text-base border-b border-gray-200 pb-2 mb-4">10A. Client&rsquo;s Question A</h3>
-        <div class="space-y-3">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">State the question exactly as discussed or written:</label>
-            <textarea name="question_a_text" rows="3"
-              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px]"></textarea>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Provide any additional context or background:</label>
-            <textarea name="question_a_context" rows="3"
-              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px]"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- 10B. Client's Question B -->
-      <div>
-        <h3 class="text-[#2c5282] font-semibold text-base border-b border-gray-200 pb-2 mb-4">10B. Client&rsquo;s Question B</h3>
-        <div class="space-y-3">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">State the question:</label>
-            <textarea name="question_b_text" rows="3"
-              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px]"></textarea>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Additional context:</label>
-            <textarea name="question_b_context" rows="3"
-              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px]"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- 10C. Client's Question C -->
-      <div>
-        <h3 class="text-[#2c5282] font-semibold text-base border-b border-gray-200 pb-2 mb-4">10C. Client&rsquo;s Question C</h3>
-        <div class="space-y-3">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">State the question:</label>
-            <textarea name="question_c_text" rows="3"
-              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px]"></textarea>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Additional context:</label>
-            <textarea name="question_c_context" rows="3"
-              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px]"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- 10D. Client's Question D -->
-      <div>
-        <h3 class="text-[#2c5282] font-semibold text-base border-b border-gray-200 pb-2 mb-4">10D. Client&rsquo;s Question D</h3>
-        <div class="space-y-3">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">State the question:</label>
-            <textarea name="question_d_text" rows="3"
-              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px]"></textarea>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Additional context:</label>
-            <textarea name="question_d_context" rows="3"
-              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px]"></textarea>
-          </div>
-        </div>
+        <textarea name="general_comments" rows="10"
+          class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[200px]"
+          placeholder="Type any questions, concerns, or additional information here..."></textarea>
       </div>
 
     </div>
@@ -1693,15 +1631,15 @@ function collectFormData() {
   // Organize into sections
   const organized = {
     section1_client_info: {},
-    section2_marriage_info: {},
-    section3_children: {},
-    section4_real_property: {},
-    section5_business_interests: {},
-    section6_financial_accounts: {},
-    section7_debts_vehicles: {},
+    section2_real_property: {},
+    section3_business_interests: {},
+    section4_financial_accounts: {},
+    section5_vehicles_personal_property: {},
+    section6_debts_insurance: {},
+    section7_debts_liabilities: {},
     section8_separate_property: {},
     section9_proposed_division: {},
-    section10_special_issues: {},
+    section10_comments: {},
     section11_income: {},
     section12_maintenance: {},
     section13_additional: {},
@@ -1711,17 +1649,16 @@ function collectFormData() {
 
   // Map fields to sections by prefix patterns
   const sectionMappings = [
-    { prefix: ['client_', 'karen_full_name', 'karen_dob', 'karen_ssn_last4', 'karen_address', 'karen_phone', 'karen_email'], section: 'section1_client_info' },
-    { prefix: ['michael_full_name', 'michael_dob', 'michael_ssn_last4', 'michael_address', 'michael_phone', 'michael_email', 'spouse_'], section: 'section1_client_info' },
-    { prefix: ['marriage_', 'date_of_marriage', 'place_of_marriage', 'prior_agreement'], section: 'section2_marriage_info' },
-    { prefix: ['children_', 'child_'], section: 'section3_children' },
-    { prefix: ['real_property', 'property_'], section: 'section4_real_property' },
-    { prefix: ['business_', 'biz_'], section: 'section5_business_interests' },
-    { prefix: ['bank_', 'investment_', 'retirement_', 'financial_'], section: 'section6_financial_accounts' },
-    { prefix: ['debt_', 'vehicle_', 'personal_property'], section: 'section7_debts_vehicles' },
+    { prefix: ['s1_client_', 's1_spouse_', 's1_marriage_', 'client_', 'spouse_', 'karen_full_name', 'karen_dob', 'karen_ssn_last4', 'karen_address', 'karen_phone', 'karen_email', 'michael_full_name', 'michael_dob', 'michael_ssn_last4', 'michael_address', 'michael_phone', 'michael_email'], section: 'section1_client_info' },
+    { prefix: ['s2_p1_', 's2_p2_', 's2_additional'], section: 'section2_real_property' },
+    { prefix: ['s3_b1_', 's3_additional'], section: 'section3_business_interests' },
+    { prefix: ['s4a_', 's4b_', 's4c_', 's4d_'], section: 'section4_financial_accounts' },
+    { prefix: ['s5a_', 's5b_', 's5c_'], section: 'section5_vehicles_personal_property' },
+    { prefix: ['s6a_', 's6b_'], section: 'section6_debts_insurance' },
+    { prefix: ['s7_', 'table_debts'], section: 'section7_debts_liabilities' },
     { prefix: ['karen_separate', 'michael_separate', 'separate_property'], section: 'section8_separate_property' },
     { prefix: ['agreement_type', 'division_'], section: 'section9_proposed_division' },
-    { prefix: ['question_'], section: 'section10_special_issues' },
+    { prefix: ['general_comments', 'attorney_comments'], section: 'section10_comments' },
     { prefix: ['karen_salary', 'karen_pay', 'karen_bonus', 'karen_business_dist', 'karen_rental', 'karen_other_income', 'michael_salary', 'michael_pay', 'michael_bonus', 'michael_business_dist', 'michael_rental', 'michael_other_income', 'karen_future', 'michael_future', 'sep_property_income', 'household_expenses'], section: 'section11_income' },
     { prefix: ['maintenance_'], section: 'section12_maintenance' },
     { prefix: ['death_', 'life_insurance', 'sunset_', 'mandatory_mediation', 'arbitration_', 'michael_independent', 'michael_attorney', 'additional_terms'], section: 'section13_additional' },
@@ -1765,7 +1702,8 @@ function saveProgress(isFinal) {
   const responses = collectFormData();
 
   // Get client and spouse names from form
-  const clientNameEl = document.querySelector('input[name="karen_full_name"]') ||
+  const clientNameEl = document.querySelector('input[name="s1_client_fullName"]') ||
+                       document.querySelector('input[name="karen_full_name"]') ||
                        document.querySelector('input[name="client_full_name"]');
   const spouseNameEl = document.querySelector('input[name="s1_spouse_fullName"]') ||
                        document.querySelector('input[name="michael_full_name"]') ||
