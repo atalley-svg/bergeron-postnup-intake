@@ -1,0 +1,556 @@
+{
+  "name": "Bergeron Marital Property Agreement – Intake Handler",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "bergeron-intake",
+        "httpMethod": "POST",
+        "responseMode": "lastNode",
+        "options": {
+          "rawBody": false
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "Webhook – Intake Submission",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 460],
+      "webhookId": "bergeron-intake"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "honeypot-check",
+              "leftValue": "={{ $json.body.website }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0002-4000-8000-000000000002",
+      "name": "Check Honeypot",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [480, 460],
+      "notes": "If the hidden 'website' honeypot field is filled in, the submission is spam. True = spam (stop). False = legitimate (continue)."
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================================\n// Prepare Data – extract fields and build variables\n// ============================================================\nconst body = $input.first().json.body;\nconst headers = $input.first().json.headers;\n\nconst token       = body.token       || '';\nconst status      = body.status      || 'draft';\nconst currentStep = body.currentStep || 1;\nconst responses   = body.responses   || {};\nconst clientName  = body.clientName  || 'Unknown';\nconst spouseName  = body.spouseName  || '';\nconst files       = body.files       || [];\n\n// Timestamp strings for file naming\nconst now     = new Date();\nconst pad     = (n) => String(n).padStart(2, '0');\nconst dateStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;\nconst timeStr = `${pad(now.getHours())}${pad(now.getMinutes())}`;\nconst isoNow  = now.toISOString();\n\n// Dropbox folder path\nconst dropboxBase = '/Bergeron, Karen \\u2013 Marital Agreement/Intake Responses';\n\nreturn [{\n  json: {\n    token,\n    status,\n    currentStep,\n    responses,\n    clientName,\n    spouseName,\n    files,\n    dateStr,\n    timeStr,\n    isoNow,\n    dropboxBase,\n    ipAddress:  headers['x-forwarded-for'] || headers['x-real-ip'] || '',\n    userAgent:  headers['user-agent'] || ''\n  }\n}];\n"
+      },
+      "id": "a1b2c3d4-0003-4000-8000-000000000003",
+      "name": "Prepare Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 560]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SUPABASE_URL || 'YOUR_SUPABASE_URL' }}/rest/v1/marital_agreement_intakes",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.SUPABASE_SERVICE_ROLE_KEY || 'YOUR_SUPABASE_SERVICE_ROLE_KEY' }}"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.SUPABASE_SERVICE_ROLE_KEY || 'YOUR_SUPABASE_SERVICE_ROLE_KEY' }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Prefer",
+              "value": "resolution=merge-duplicates"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"token\":        \"{{ $json.token }}\",\n  \"client_name\":  \"{{ $json.clientName }}\",\n  \"spouse_name\":  \"{{ $json.spouseName }}\",\n  \"matter_type\":  \"Marital Property Agreement\",\n  \"status\":       \"{{ $json.status }}\",\n  \"responses\":    {{ JSON.stringify($json.responses) }},\n  \"current_step\": {{ $json.currentStep }},\n  \"updated_at\":   \"{{ $json.isoNow }}\",\n  {{ $json.status === 'final' ? '\"submitted_at\": \"' + $json.isoNow + '\",' : '' }}\n  \"ip_address\":   \"{{ $json.ipAddress }}\",\n  \"user_agent\":   \"{{ $json.userAgent }}\"\n}",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0004-4000-8000-000000000004",
+      "name": "Upsert Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [960, 560],
+      "notes": "Upserts intake row into Supabase. Uses 'Prefer: resolution=merge-duplicates' which upserts on the unique token column. CONFIGURE: Set environment variables SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in n8n Settings > Environment Variables, or replace the placeholder strings in the header values."
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================================\n// Generate TXT Summary – human-readable intake summary\n// ============================================================\nconst data       = $input.first().json;\nconst token      = data.token;\nconst clientName = data.clientName;\nconst spouseName = data.spouseName;\nconst status     = data.status;\nconst responses  = data.responses || {};\nconst dateStr    = data.dateStr;\nconst timeStr    = data.timeStr;\nconst isoNow     = data.isoNow;\n\nconst lines = [];\nlines.push('='.repeat(70));\nlines.push('BERGERON MARITAL PROPERTY AGREEMENT – INTAKE SUMMARY');\nlines.push('='.repeat(70));\nlines.push('');\nlines.push(`Generated:    ${isoNow}`);\nlines.push(`Token:        ${token}`);\nlines.push(`Client:       ${clientName}`);\nlines.push(`Spouse:       ${spouseName}`);\nlines.push(`Status:       ${status.toUpperCase()}`);\nlines.push('');\nlines.push('-'.repeat(70));\n\n// Section map for readable labels\nconst sectionOrder = [\n  'clientInfo',\n  'spouseInfo',\n  'marriageDetails',\n  'realProperty',\n  'personalProperty',\n  'financialAccounts',\n  'retirementAccounts',\n  'businessInterests',\n  'debtsLiabilities',\n  'incomeEmployment',\n  'spousalSupport',\n  'childrenInfo',\n  'petProvisions',\n  'estatePlanning',\n  'additionalProvisions'\n];\n\nconst sectionLabels = {\n  clientInfo:            '1. CLIENT INFORMATION',\n  spouseInfo:            '2. SPOUSE INFORMATION',\n  marriageDetails:       '3. MARRIAGE DETAILS',\n  realProperty:          '4. REAL PROPERTY',\n  personalProperty:      '5. PERSONAL PROPERTY',\n  financialAccounts:     '6. FINANCIAL ACCOUNTS',\n  retirementAccounts:    '7. RETIREMENT ACCOUNTS',\n  businessInterests:     '8. BUSINESS INTERESTS',\n  debtsLiabilities:      '9. DEBTS & LIABILITIES',\n  incomeEmployment:      '10. INCOME & EMPLOYMENT',\n  spousalSupport:        '11. SPOUSAL SUPPORT',\n  childrenInfo:          '12. CHILDREN',\n  petProvisions:         '13. PET PROVISIONS',\n  estatePlanning:        '14. ESTATE PLANNING',\n  additionalProvisions:  '15. ADDITIONAL PROVISIONS'\n};\n\nfor (const sectionKey of sectionOrder) {\n  const sectionData = responses[sectionKey];\n  lines.push('');\n  lines.push(sectionLabels[sectionKey] || sectionKey);\n  lines.push('-'.repeat(40));\n\n  if (!sectionData || typeof sectionData !== 'object' || Object.keys(sectionData).length === 0) {\n    lines.push('  (no responses)');\n    continue;\n  }\n\n  for (const [field, value] of Object.entries(sectionData)) {\n    const label = field.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase()).trim();\n    const display = Array.isArray(value) ? value.join(', ') : String(value);\n    lines.push(`  ${label}: ${display}`);\n  }\n}\n\nlines.push('');\nlines.push('='.repeat(70));\nlines.push('END OF SUMMARY');\nlines.push('='.repeat(70));\n\nconst txtContent = lines.join('\\n');\n\n// Pass through all prior fields plus the summary\nreturn [{\n  json: {\n    ...data,\n    txtSummary: txtContent,\n    txtFilename: `intake_${dateStr}_${timeStr}.txt`\n  }\n}];\n"
+      },
+      "id": "a1b2c3d4-0005-4000-8000-000000000005",
+      "name": "Generate TXT Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1200, 560]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================================\n// Generate Remaining Fields TXT\n// Lists every unanswered/empty field grouped by section.\n// ============================================================\nconst data      = $input.first().json;\nconst responses = data.responses || {};\nconst dateStr   = data.dateStr;\nconst timeStr   = data.timeStr;\nconst isoNow    = data.isoNow;\n\n// Complete field map – all 15 sections with every expected field name.\n// Update this map whenever the intake form adds or removes fields.\nconst fieldMap = {\n  clientInfo: [\n    'fullLegalName', 'preferredName', 'dateOfBirth', 'ssn',\n    'address', 'city', 'state', 'zip',\n    'phone', 'email', 'employer', 'occupation'\n  ],\n  spouseInfo: [\n    'fullLegalName', 'preferredName', 'dateOfBirth', 'ssn',\n    'address', 'city', 'state', 'zip',\n    'phone', 'email', 'employer', 'occupation'\n  ],\n  marriageDetails: [\n    'dateOfMarriage', 'placeOfMarriage', 'agreementType',\n    'priorMarriagesClient', 'priorMarriagesSpouse',\n    'separationDate', 'cohabitationStatus'\n  ],\n  realProperty: [\n    'properties', 'maritalHome', 'maritalHomeValue',\n    'maritalHomeOwnership', 'maritalHomeMortgage',\n    'otherRealEstate'\n  ],\n  personalProperty: [\n    'vehicles', 'jewelry', 'furniture', 'electronics',\n    'collectibles', 'otherPersonalProperty'\n  ],\n  financialAccounts: [\n    'checkingAccounts', 'savingsAccounts', 'investmentAccounts',\n    'stocksBonds', 'cryptoAccounts', 'otherFinancialAccounts'\n  ],\n  retirementAccounts: [\n    'retirement401k', 'pensionPlans', 'iraAccounts',\n    'deferredComp', 'otherRetirement'\n  ],\n  businessInterests: [\n    'ownsBusiness', 'businessName', 'businessType',\n    'ownershipPercentage', 'businessValue',\n    'businessDebts', 'otherBusinessInterests'\n  ],\n  debtsLiabilities: [\n    'creditCards', 'studentLoans', 'autoLoans',\n    'personalLoans', 'taxDebts', 'otherDebts',\n    'totalEstimatedDebt'\n  ],\n  incomeEmployment: [\n    'clientAnnualIncome', 'spouseAnnualIncome',\n    'clientEmploymentStatus', 'spouseEmploymentStatus',\n    'bonusIncome', 'rentalIncome', 'otherIncome'\n  ],\n  spousalSupport: [\n    'requestingSpousalSupport', 'supportAmount',\n    'supportDuration', 'supportWaiver', 'supportNotes'\n  ],\n  childrenInfo: [\n    'hasChildren', 'numberOfChildren', 'childrenDetails',\n    'custodyPreference', 'childSupportNotes'\n  ],\n  petProvisions: [\n    'hasPets', 'petDetails', 'petCustodyPreference'\n  ],\n  estatePlanning: [\n    'hasWill', 'hasTrust', 'beneficiaryDesignations',\n    'powerOfAttorney', 'healthcareDirective', 'estateNotes'\n  ],\n  additionalProvisions: [\n    'socialMediaProvisions', 'nonDisparagement',\n    'confidentiality', 'disputeResolution',\n    'governingLaw', 'additionalNotes'\n  ]\n};\n\nconst sectionLabels = {\n  clientInfo:            '1. CLIENT INFORMATION',\n  spouseInfo:            '2. SPOUSE INFORMATION',\n  marriageDetails:       '3. MARRIAGE DETAILS',\n  realProperty:          '4. REAL PROPERTY',\n  personalProperty:      '5. PERSONAL PROPERTY',\n  financialAccounts:     '6. FINANCIAL ACCOUNTS',\n  retirementAccounts:    '7. RETIREMENT ACCOUNTS',\n  businessInterests:     '8. BUSINESS INTERESTS',\n  debtsLiabilities:      '9. DEBTS & LIABILITIES',\n  incomeEmployment:      '10. INCOME & EMPLOYMENT',\n  spousalSupport:        '11. SPOUSAL SUPPORT',\n  childrenInfo:          '12. CHILDREN',\n  petProvisions:         '13. PET PROVISIONS',\n  estatePlanning:        '14. ESTATE PLANNING',\n  additionalProvisions:  '15. ADDITIONAL PROVISIONS'\n};\n\nconst lines = [];\nlines.push('='.repeat(70));\nlines.push('BERGERON INTAKE – REMAINING / UNANSWERED FIELDS');\nlines.push('='.repeat(70));\nlines.push('');\nlines.push(`Generated: ${isoNow}`);\nlines.push(`Token:     ${data.token}`);\nlines.push(`Client:    ${data.clientName}`);\nlines.push('');\n\nlet totalMissing = 0;\nlet totalFields  = 0;\n\nfor (const [sectionKey, fields] of Object.entries(fieldMap)) {\n  const sectionResponses = responses[sectionKey] || {};\n  const missing = [];\n\n  for (const field of fields) {\n    totalFields++;\n    const val = sectionResponses[field];\n    const empty = (val === undefined || val === null || val === '' ||\n                   (Array.isArray(val) && val.length === 0));\n    if (empty) {\n      missing.push(field);\n      totalMissing++;\n    }\n  }\n\n  if (missing.length > 0) {\n    lines.push(sectionLabels[sectionKey] || sectionKey);\n    lines.push('-'.repeat(40));\n    for (const m of missing) {\n      const label = m.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase()).trim();\n      lines.push(`  [ ] ${label}`);\n    }\n    lines.push('');\n  }\n}\n\nlines.push('-'.repeat(70));\nlines.push(`Total fields: ${totalFields}  |  Answered: ${totalFields - totalMissing}  |  Remaining: ${totalMissing}`);\nlines.push('='.repeat(70));\n\nconst remainingTxt = lines.join('\\n');\n\nreturn [{\n  json: {\n    ...data,\n    remainingFieldsTxt: remainingTxt,\n    remainingFilename: `remaining_fields_${dateStr}_${timeStr}.txt`\n  }\n}];\n"
+      },
+      "id": "a1b2c3d4-0006-4000-8000-000000000006",
+      "name": "Generate Remaining Fields TXT",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1440, 560]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "upload",
+        "path": "={{ $json.dropboxBase }}/{{ $json.txtFilename }}",
+        "binaryPropertyName": "data",
+        "options": {
+          "autorename": true
+        }
+      },
+      "id": "a1b2c3d4-0007-4000-8000-000000000007",
+      "name": "Save TXT Summary to Dropbox",
+      "type": "n8n-nodes-base.dropbox",
+      "typeVersion": 1,
+      "position": [1680, 460],
+      "credentials": {
+        "dropboxOAuth2Api": {
+          "id": "CONFIGURE_ME",
+          "name": "Dropbox account"
+        }
+      },
+      "notes": "CONFIGURE: Connect your Dropbox OAuth2 credential named 'Dropbox account'. The path writes to /Bergeron, Karen – Marital Agreement/Intake Responses/. Uses a Set node upstream to convert text to binary; if your n8n version requires binary input, add a 'Move Binary Data' node before this."
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "upload",
+        "path": "={{ $json.dropboxBase }}/{{ $json.remainingFilename }}",
+        "binaryPropertyName": "data",
+        "options": {
+          "autorename": true
+        }
+      },
+      "id": "a1b2c3d4-0008-4000-8000-000000000008",
+      "name": "Save Remaining Fields to Dropbox",
+      "type": "n8n-nodes-base.dropbox",
+      "typeVersion": 1,
+      "position": [1680, 660],
+      "credentials": {
+        "dropboxOAuth2Api": {
+          "id": "CONFIGURE_ME",
+          "name": "Dropbox account"
+        }
+      },
+      "notes": "CONFIGURE: Uses same Dropbox OAuth2 credential. Saves the remaining-fields checklist alongside the summary."
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================================\n// Convert TXT outputs to binary for Dropbox upload nodes\n// n8n Dropbox node expects binary data for file uploads.\n// ============================================================\nconst data = $input.first().json;\n\n// Create binary buffers from text content\nconst summaryBuffer   = Buffer.from(data.txtSummary, 'utf-8');\nconst remainingBuffer = Buffer.from(data.remainingFieldsTxt, 'utf-8');\n\nreturn [{\n  json: { ...data },\n  binary: {\n    summaryTxt: {\n      data: summaryBuffer.toString('base64'),\n      mimeType: 'text/plain',\n      fileName: data.txtFilename\n    },\n    remainingTxt: {\n      data: remainingBuffer.toString('base64'),\n      mimeType: 'text/plain',\n      fileName: data.remainingFilename\n    }\n  }\n}];\n"
+      },
+      "id": "a1b2c3d4-0009-4000-8000-000000000009",
+      "name": "Convert TXT to Binary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1440, 740],
+      "notes": "Converts the text summary and remaining-fields strings into binary data so the Dropbox upload nodes can consume them."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "final-check",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "final",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0010-4000-8000-000000000010",
+      "name": "Check if Final Submit",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1920, 560],
+      "notes": "Routes to PDF generation only when status === 'final'. Draft saves skip straight to the response node."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.PDF_SERVICE_URL || 'https://your-pdf-service.example.com/generate' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "={{ $env.PDF_SERVICE_API_KEY ? 'Bearer ' + $env.PDF_SERVICE_API_KEY : 'Bearer YOUR_PDF_API_KEY' }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"source\": \"html\",\n  \"html\": \"<html><head><style>body{font-family:Arial,sans-serif;margin:40px;} h1{color:#1a365d;} table{width:100%;border-collapse:collapse;margin:16px 0;} td{padding:6px 10px;border-bottom:1px solid #ddd;vertical-align:top;} .label{font-weight:bold;width:35%;color:#2d3748;} .section{background:#edf2f7;padding:10px;margin:20px 0 8px;font-size:1.1em;font-weight:bold;}</style></head><body><h1>Bergeron Marital Property Agreement&mdash;Intake</h1><p>Client: {{ $json.clientName }}<br>Spouse: {{ $json.spouseName }}<br>Submitted: {{ $json.isoNow }}</p><pre>{{ $json.txtSummary }}</pre></body></html>\",\n  \"filename\": \"Bergeron_Intake_Completed_{{ $json.dateStr }}.pdf\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "id": "a1b2c3d4-0011-4000-8000-000000000011",
+      "name": "Generate PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2160, 460],
+      "notes": "PLACEHOLDER – PDF Generation Service\n\nConfigure ONE of these options:\n\n1. Gotenberg (self-hosted, recommended):\n   URL: http://gotenberg:3000/forms/chromium/convert/html\n   Send HTML as multipart form data.\n\n2. PDFShift (SaaS):\n   URL: https://api.pdfshift.io/v3/convert/pdf\n   Auth: Basic (api_key as user, blank password)\n\n3. Puppeteer n8n community node:\n   Replace this HTTP Request node with the\n   n8n-nodes-puppeteer community node.\n\nSet PDF_SERVICE_URL and PDF_SERVICE_API_KEY\nin n8n Settings > Environment Variables."
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "upload",
+        "path": "={{ $json.dropboxBase }}/Bergeron_Intake_Completed_{{ $json.dateStr }}.pdf",
+        "binaryPropertyName": "data",
+        "options": {
+          "autorename": true
+        }
+      },
+      "id": "a1b2c3d4-0012-4000-8000-000000000012",
+      "name": "Save PDF to Dropbox",
+      "type": "n8n-nodes-base.dropbox",
+      "typeVersion": 1,
+      "position": [2400, 460],
+      "credentials": {
+        "dropboxOAuth2Api": {
+          "id": "CONFIGURE_ME",
+          "name": "Dropbox account"
+        }
+      },
+      "notes": "CONFIGURE: Saves the completed intake PDF to the Bergeron Dropbox folder."
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================================\n// Handle File Uploads\n// Decodes base64 files from the intake submission and\n// prepares them as binary items for Dropbox upload.\n// ============================================================\nconst data  = $input.first().json;\nconst files = data.files || [];\n\nif (!files.length) {\n  // No files to process – pass through with a flag\n  return [{ json: { ...data, hasFiles: false } }];\n}\n\nconst results = [];\nfor (let i = 0; i < files.length; i++) {\n  const file = files[i];\n  // Each file object expected: { name: string, base64: string, mimeType?: string }\n  const fileName = file.name || `upload_${i + 1}`;\n  const mimeType = file.mimeType || 'application/octet-stream';\n  const base64   = file.base64  || file.data || '';\n\n  if (!base64) continue;\n\n  results.push({\n    json: {\n      ...data,\n      hasFiles: true,\n      uploadIndex: i,\n      uploadFileName: fileName,\n      uploadPath: `${data.dropboxBase}/Uploads/${data.dateStr}_${fileName}`\n    },\n    binary: {\n      fileData: {\n        data: base64,\n        mimeType: mimeType,\n        fileName: fileName\n      }\n    }\n  });\n}\n\nif (results.length === 0) {\n  return [{ json: { ...data, hasFiles: false } }];\n}\n\nreturn results;\n"
+      },
+      "id": "a1b2c3d4-0013-4000-8000-000000000013",
+      "name": "Handle File Uploads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1920, 800],
+      "notes": "Processes the files[] array from the intake submission. Each file is expected as { name, base64, mimeType }. Outputs one item per file with binary data for Dropbox upload."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-files-check",
+              "leftValue": "={{ $json.hasFiles }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0014-4000-8000-000000000014",
+      "name": "Has Files?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [2160, 800]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "upload",
+        "path": "={{ $json.uploadPath }}",
+        "binaryPropertyName": "fileData",
+        "options": {
+          "autorename": true
+        }
+      },
+      "id": "a1b2c3d4-0015-4000-8000-000000000015",
+      "name": "Upload Files to Dropbox",
+      "type": "n8n-nodes-base.dropbox",
+      "typeVersion": 1,
+      "position": [2400, 760],
+      "credentials": {
+        "dropboxOAuth2Api": {
+          "id": "CONFIGURE_ME",
+          "name": "Dropbox account"
+        }
+      },
+      "notes": "CONFIGURE: Uploads each decoded file to the Uploads/ subfolder in Dropbox."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"token\":   \"{{ $('Prepare Data').item.json.token }}\",\n  \"status\":  \"{{ $('Prepare Data').item.json.status }}\",\n  \"savedAt\": \"{{ $('Prepare Data').item.json.isoNow }}\"\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "a1b2c3d4-0016-4000-8000-000000000016",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [2640, 560],
+      "notes": "Final response sent back to the intake form client. Returns success, token, status, and savedAt timestamp."
+    },
+    {
+      "parameters": {},
+      "id": "a1b2c3d4-0017-4000-8000-000000000017",
+      "name": "Spam – Stop",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [720, 340],
+      "notes": "Honeypot triggered – this is a spam submission. No further processing."
+    }
+  ],
+  "connections": {
+    "Webhook – Intake Submission": {
+      "main": [
+        [
+          {
+            "node": "Check Honeypot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Honeypot": {
+      "main": [
+        [
+          {
+            "node": "Spam – Stop",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Data": {
+      "main": [
+        [
+          {
+            "node": "Upsert Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert Supabase": {
+      "main": [
+        [
+          {
+            "node": "Generate TXT Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate TXT Summary": {
+      "main": [
+        [
+          {
+            "node": "Generate Remaining Fields TXT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Remaining Fields TXT": {
+      "main": [
+        [
+          {
+            "node": "Convert TXT to Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert TXT to Binary": {
+      "main": [
+        [
+          {
+            "node": "Save TXT Summary to Dropbox",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Save Remaining Fields to Dropbox",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save TXT Summary to Dropbox": {
+      "main": [
+        [
+          {
+            "node": "Check if Final Submit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Remaining Fields to Dropbox": {
+      "main": [
+        [
+          {
+            "node": "Handle File Uploads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Final Submit": {
+      "main": [
+        [
+          {
+            "node": "Generate PDF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate PDF": {
+      "main": [
+        [
+          {
+            "node": "Save PDF to Dropbox",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save PDF to Dropbox": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Handle File Uploads": {
+      "main": [
+        [
+          {
+            "node": "Has Files?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Files?": {
+      "main": [
+        [
+          {
+            "node": "Upload Files to Dropbox",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Upload Files to Dropbox": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "versionId": "bergeron-intake-v1",
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": ""
+  },
+  "id": "bergeron-intake-workflow",
+  "tags": [
+    {
+      "name": "Bergeron",
+      "id": "tag-bergeron"
+    },
+    {
+      "name": "Intake",
+      "id": "tag-intake"
+    }
+  ]
+}
