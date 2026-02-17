@@ -30,6 +30,53 @@ tailwind.config = {
 </head>
 <body class="bg-gray-50 min-h-screen">
 
+<!-- PASSWORD GATE -->
+<div id="password-gate" class="min-h-screen flex items-center justify-center bg-gray-50">
+  <div class="bg-white shadow-lg rounded-lg overflow-hidden max-w-md w-full mx-4">
+    <div class="bg-[#1e3a5f] text-white px-6 py-5 text-center">
+      <img src="logo.png" alt="The Talley Law Firm PLLC" class="h-14 mx-auto mb-3" onerror="this.style.display='none'">
+      <h1 class="text-lg font-bold tracking-wide">THE TALLEY LAW FIRM PLLC</h1>
+      <p class="text-blue-200 text-sm mt-1">Marital Property Agreement — Intake Questionnaire</p>
+    </div>
+    <div class="p-6">
+      <p class="text-sm text-gray-600 mb-4 text-center">This questionnaire is confidential. Please enter the access password provided by your attorney.</p>
+      <div class="space-y-4">
+        <div>
+          <label for="gate-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <input type="password" id="gate-password" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter access password" onkeydown="if(event.key==='Enter')unlockForm()">
+        </div>
+        <div id="gate-error" class="hidden text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">Incorrect password. Please try again or contact your attorney.</div>
+        <button type="button" onclick="unlockForm()" class="w-full bg-[#1e3a5f] hover:bg-[#2c5282] text-white font-medium py-2 px-4 rounded-md transition-colors">Access Questionnaire</button>
+      </div>
+    </div>
+    <div class="px-6 pb-4 text-center">
+      <p class="text-xs text-gray-400">If you have trouble accessing this form, please contact<br>(832) 889-3229 &middot; atalley@thetalleylaw.com</p>
+    </div>
+  </div>
+</div>
+
+<script>
+async function unlockForm() {
+  const input = document.getElementById('gate-password').value;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(input);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+  if (hashHex === 'beb7b66fb39dc17ad71c5e7b35c4c37e2e5cbe980c2ab92bfcebc1c6d2b032ea') {
+    document.getElementById('password-gate').style.display = 'none';
+    document.getElementById('form-content').style.display = 'block';
+  } else {
+    document.getElementById('gate-error').classList.remove('hidden');
+    document.getElementById('gate-password').value = '';
+    document.getElementById('gate-password').focus();
+  }
+}
+</script>
+
+<!-- FORM CONTENT (hidden until password is entered) -->
+<div id="form-content" style="display:none;">
+
 <!-- Honeypot -->
 <input type="text" name="website" id="honeypot" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
 
@@ -40,8 +87,8 @@ tailwind.config = {
       <img id="firm-logo" src="logo.png" alt="The Talley Law Firm PLLC" class="h-14 w-auto" onerror="this.style.display='none'">
       <div>
         <h1 class="text-xl font-bold tracking-wide">THE TALLEY LAW FIRM PLLC</h1>
-        <p class="text-sm text-blue-200">4310 Westheimer Road, Suite 206, Houston, Texas 77027</p>
-        <p class="text-xs text-blue-300">(713) 521-3600 &middot; andrew@talleylawfirm.com</p>
+        <p class="text-sm text-blue-200">1506 E. Winding Way Drive, Suite 103, Friendswood, Texas 77546</p>
+        <p class="text-xs text-blue-300">(832) 889-3229 &middot; atalley@thetalleylaw.com</p>
       </div>
     </div>
     <div class="text-right text-sm">
@@ -101,7 +148,7 @@ tailwind.config = {
       <div>
         <h3 class="text-firm-mid font-semibold text-base border-b border-gray-200 pb-2 mb-4">1A. Client (Karen Bergeron)</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Full Legal Name <span class="text-red-500">*</span></label><input type="text" name="s1_client_fullName" required class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Karen Bergeron"></div>
+          <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Full Legal Name</label><input type="text" name="s1_client_fullName" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Karen Bergeron"></div>
           <div><label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label><input type="date" name="s1_client_dob" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></div>
           <div><label class="block text-sm font-medium text-gray-700 mb-1">SSN (last 4)</label><input type="text" name="s1_client_ssn4" maxlength="4" pattern="\d{4}" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="XXXX"></div>
           <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Current Mailing Address</label><input type="text" name="s1_client_address" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></div>
@@ -1273,8 +1320,8 @@ tailwind.config = {
       <!-- Signature Fields -->
       <div class="space-y-5">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Signature <span class="text-red-500">*</span></label>
-          <input type="text" name="certification_signature" required
+          <label class="block text-sm font-medium text-gray-700 mb-1">Signature</label>
+          <input type="text" name="certification_signature"
             class="w-full border-0 border-b-2 border-gray-400 px-3 py-3 text-lg focus:ring-0 focus:border-blue-600 bg-transparent"
             style="font-family: 'Brush Script MT', 'Segoe Script', cursive; font-size: 1.5rem;"
             placeholder="Type your full legal name as signature">
@@ -1283,13 +1330,13 @@ tailwind.config = {
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Printed Name <span class="text-red-500">*</span></label>
-            <input type="text" name="certification_printed_name" required
+            <label class="block text-sm font-medium text-gray-700 mb-1">Printed Name</label>
+            <input type="text" name="certification_printed_name"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Date <span class="text-red-500">*</span></label>
-            <input type="date" name="certification_date" required
+            <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+            <input type="date" name="certification_date"
               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           </div>
         </div>
@@ -1399,8 +1446,8 @@ tailwind.config = {
    =================================================================== */
 const CONFIG = {
   webhookUrl: 'YOUR_N8N_WEBHOOK_URL',
-  supabaseUrl: 'YOUR_SUPABASE_URL',
-  supabaseAnonKey: 'YOUR_SUPABASE_ANON_KEY',
+  supabaseUrl: 'https://hialadssyitrehievsab.supabase.co',
+  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhpYWxhZHNzeWl0cmVoaWV2c2FiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY3NzUxMTIsImV4cCI6MjA4MjM1MTExMn0.ZCHdlMfAGbLuhXL0CDnr894YMEZTvEp3abH2h4enqxk',
   autoSaveInterval: 30000,
   maxFileSize: 25 * 1024 * 1024,
   allowedFileTypes: ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png', '.xlsx', '.xls'],
@@ -1553,17 +1600,9 @@ function evaluateConditionals() {
       el.classList.remove('hidden');
       // Support Part 1 data-conditional pattern
       if (el.hasAttribute('data-conditional')) el.classList.add('visible');
-      // Enable required fields within
-      el.querySelectorAll('[data-conditional-required]').forEach(function (input) {
-        input.setAttribute('required', '');
-      });
     } else {
       el.classList.add('hidden');
       if (el.hasAttribute('data-conditional')) el.classList.remove('visible');
-      // Disable required fields within
-      el.querySelectorAll('[data-conditional-required]').forEach(function (input) {
-        input.removeAttribute('required');
-      });
     }
   });
 }
@@ -1820,9 +1859,6 @@ function uploadFilesToWebhook(payload) {
 }
 
 function submitForm() {
-  // Validate the final step
-  if (!validateStep(currentStep)) return;
-
   // Confirm before final submission
   if (!confirm('Are you ready to submit your completed questionnaire? You will not be able to edit your responses after submission.')) {
     return;
@@ -2194,59 +2230,8 @@ function autoSaveToLocalStorage() {
    12. FORM VALIDATION (per step)
    =================================================================== */
 function validateStep(stepNum) {
-  const stepEl = document.querySelector('.step[data-step="' + stepNum + '"]');
-  if (!stepEl) return true;
-
-  const requiredFields = stepEl.querySelectorAll('[required]');
-  let valid = true;
-  let firstInvalid = null;
-
-  requiredFields.forEach(function (field) {
-    // Skip hidden conditional fields
-    const conditionalParent = field.closest('[data-show-when]');
-    if (conditionalParent && conditionalParent.classList.contains('hidden')) {
-      return; // Skip validation for hidden fields
-    }
-
-    // Remove previous error styling
-    field.classList.remove('border-red-500', 'ring-red-500');
-
-    let fieldValid = false;
-
-    if (field.type === 'radio') {
-      // Check if any radio in the group is selected
-      const name = field.name;
-      const radios = stepEl.querySelectorAll('input[name="' + name + '"]');
-      radios.forEach(function (r) {
-        if (r.checked) fieldValid = true;
-      });
-      if (!fieldValid) {
-        radios.forEach(function (r) {
-          r.classList.add('ring-red-500');
-        });
-      }
-    } else if (field.type === 'checkbox') {
-      fieldValid = field.checked;
-    } else {
-      fieldValid = field.value.trim() !== '';
-    }
-
-    if (!fieldValid) {
-      field.classList.add('border-red-500');
-      valid = false;
-      if (!firstInvalid) firstInvalid = field;
-    }
-  });
-
-  if (!valid) {
-    showToast('Please complete all required fields before continuing.', 'error');
-    if (firstInvalid) {
-      firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      firstInvalid.focus();
-    }
-  }
-
-  return valid;
+  // All fields are optional — client fills out piecemeal across sessions
+  return true;
 }
 
 /* ===================================================================
@@ -2373,6 +2358,8 @@ function showConfirmation(clientName, token) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
+
+</div><!-- /form-content -->
 
 </body>
 </html>
