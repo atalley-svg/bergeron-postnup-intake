@@ -243,14 +243,7 @@ async function unlockForm() {
         <div><label class="block text-sm font-medium text-gray-700 mb-2">Existing premarital or marital property agreement?</label><div class="flex gap-6"><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s1_existingAgreement" value="Yes" class="mr-2"> Yes</label><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s1_existingAgreement" value="No" class="mr-2"> No</label></div><div data-conditional data-show-when="s1_existingAgreement" data-show-value="Yes" class="mt-2"><p class="text-sm text-amber-700 bg-amber-50 border-l-4 border-amber-500 p-3"><em>If yes, please upload a copy to the Dropbox folder.</em></p></div></div>
       </div>
 
-      <!-- File Upload -->
-      <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-firm-mid transition-colors" data-upload="s1_files">
-        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 48 48"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M24 8v24m-8-8l8 8 8-8M8 36h32"/></svg>
-        <input type="file" multiple class="hidden" id="upload_s1" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls">
-        <label for="upload_s1" class="cursor-pointer"><p class="mt-2 text-sm text-gray-600">Drag &amp; drop files here or <span class="text-firm-mid font-medium">browse</span></p><p class="mt-1 text-xs text-gray-400">PDF, DOC, DOCX, JPG, PNG, XLS, XLSX — Max 25MB per file</p></label>
-        <div class="file-list mt-3 space-y-1"></div>
-        <p class="text-xs text-gray-500 mt-1 text-center">Uploaded documents will be automatically saved to your shared Dropbox folder.</p>
-      </div>
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">Please upload documents directly to your shared Dropbox folder (Bergeron &gt; Intake Responses). If you need help accessing the folder, contact your attorney.</div>
     </div>
   </div>
   <div class="flex justify-between items-center"><div><button type="button" onclick="goToStep(CONFIG.totalSteps)" class="text-sm text-gray-500 hover:text-[#1e3a5f] underline">Jump to Last Section &rarr;</button></div><div class="flex gap-3"><button type="button" onclick="saveProgress()" class="border border-firm-dark text-firm-dark hover:bg-blue-50 px-4 py-2 rounded-md text-sm">Save Progress</button><button type="button" onclick="nextStep()" class="bg-firm-dark hover:bg-firm-mid text-white px-6 py-2 rounded-md">Next &rarr;</button></div></div>
@@ -299,8 +292,7 @@ async function unlockForm() {
       <div class="flex gap-6 mb-3"><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s2_additionalProperty" value="Yes" class="mr-2"> Yes</label><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s2_additionalProperty" value="No" class="mr-2"> No</label></div>
       <div data-conditional data-show-when="s2_additionalProperty" data-show-value="Yes"><textarea name="s2_additionalProperty_details" rows="4" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Briefly list any additional properties"></textarea></div>
 
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800 mt-4">Upload supporting documents (deeds, mortgage statements) using the file upload areas in each section, or provide them directly to your attorney.</div>
-      <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-firm-mid transition-colors" data-upload="s2_files"><input type="file" multiple class="hidden" id="upload_s2" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls"><label for="upload_s2" class="cursor-pointer"><p class="text-sm text-gray-600">Drag &amp; drop deeds/mortgage statements or <span class="text-firm-mid font-medium">browse</span></p></label><div class="file-list mt-3 space-y-1"></div><p class="text-xs text-gray-500 mt-1 text-center">Uploaded documents will be automatically saved to your shared Dropbox folder.</p></div>
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800 mt-4">Please upload documents (deeds, mortgage statements) directly to your shared Dropbox folder (Bergeron &gt; Intake Responses). If you need help accessing the folder, contact your attorney.</div>
 
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes or Comments</label>
@@ -345,8 +337,7 @@ async function unlockForm() {
       <label class="block text-sm font-medium text-gray-700 mb-2">Any additional businesses (either spouse)?</label>
       <div class="flex gap-6 mb-3"><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s3_additionalBiz" value="Yes" class="mr-2"> Yes</label><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s3_additionalBiz" value="No" class="mr-2"> No</label></div>
       <div data-conditional data-show-when="s3_additionalBiz" data-show-value="Yes"><textarea name="s3_additionalBiz_details" rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="List briefly here"></textarea></div>
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800 mt-4">Use the file upload area in this section to attach relevant business documents, or provide them directly to your attorney.</div>
-      <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-firm-mid transition-colors" data-upload="s3_files"><input type="file" multiple class="hidden" id="upload_s3" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls"><label for="upload_s3" class="cursor-pointer"><p class="text-sm text-gray-600">Drag &amp; drop business documents or <span class="text-firm-mid font-medium">browse</span></p></label><div class="file-list mt-3 space-y-1"></div><p class="text-xs text-gray-500 mt-1 text-center">Uploaded documents will be automatically saved to your shared Dropbox folder.</p></div>
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800 mt-4">Please upload business documents directly to your shared Dropbox folder (Bergeron &gt; Intake Responses). If you need help accessing the folder, contact your attorney.</div>
 
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes or Comments</label>
@@ -406,8 +397,7 @@ async function unlockForm() {
       <label class="block text-sm font-medium text-gray-700 mb-2">Any cryptocurrency or digital assets?</label>
       <div class="flex gap-6 mb-3"><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s4d_crypto" value="Yes" class="mr-2"> Yes</label><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s4d_crypto" value="No" class="mr-2"> No</label></div>
       <div data-conditional data-show-when="s4d_crypto" data-show-value="Yes"><textarea name="s4d_crypto_details" rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="List exchange/wallet, type, and approx. value"></textarea></div>
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800 mt-4">Use the file upload area in this section to attach recent account statements, or provide them directly to your attorney.</div>
-      <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-firm-mid transition-colors" data-upload="s4_files"><input type="file" multiple class="hidden" id="upload_s4" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls"><label for="upload_s4" class="cursor-pointer"><p class="text-sm text-gray-600">Drag &amp; drop account statements or <span class="text-firm-mid font-medium">browse</span></p></label><div class="file-list mt-3 space-y-1"></div><p class="text-xs text-gray-500 mt-1 text-center">Uploaded documents will be automatically saved to your shared Dropbox folder.</p></div>
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800 mt-4">Please upload account statements directly to your shared Dropbox folder (Bergeron &gt; Intake Responses). If you need help accessing the folder, contact your attorney.</div>
 
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes or Comments</label>
@@ -453,7 +443,7 @@ async function unlockForm() {
       <label class="block text-sm font-medium text-gray-700 mb-2">How will household furnishings be addressed?</label>
       <div class="flex flex-wrap gap-4 mb-3"><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s5c_furnishings" value="Divide by agreement" class="mr-2"> Divide by agreement</label><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s5c_furnishings" value="Each keeps what they have" class="mr-2"> Each keeps what they have</label><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s5c_furnishings" value="Other" class="mr-2"> Other</label></div>
       <div data-conditional data-show-when="s5c_furnishings" data-show-value="Other"><textarea name="s5c_furnishings_other" rows="2" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Describe"></textarea></div>
-      <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-firm-mid transition-colors mt-4" data-upload="s5_files"><input type="file" multiple class="hidden" id="upload_s5" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls"><label for="upload_s5" class="cursor-pointer"><p class="text-sm text-gray-600">Drag &amp; drop vehicle titles/loan statements or <span class="text-firm-mid font-medium">browse</span></p></label><div class="file-list mt-3 space-y-1"></div><p class="text-xs text-gray-500 mt-1 text-center">Uploaded documents will be automatically saved to your shared Dropbox folder.</p></div>
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800 mt-4">Please upload vehicle titles and loan statements directly to your shared Dropbox folder (Bergeron &gt; Intake Responses). If you need help accessing the folder, contact your attorney.</div>
 
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes or Comments</label>
@@ -488,7 +478,7 @@ async function unlockForm() {
         <div><label class="block text-sm font-medium text-gray-700 mb-2">Annuities?</label><div class="flex flex-wrap gap-4"><label class="inline-flex items-center cursor-pointer"><input type="checkbox" name="s6b_annuity_karen" value="Yes" class="mr-2"> Yes — Karen</label><label class="inline-flex items-center cursor-pointer"><input type="checkbox" name="s6b_annuity_michael" value="Yes" class="mr-2"> Yes — Michael</label><label class="inline-flex items-center cursor-pointer"><input type="checkbox" name="s6b_annuity_no" value="No" class="mr-2"> No</label></div></div>
         <div><label class="block text-sm font-medium text-gray-700 mb-1">If yes to either, provide details:</label><textarea name="s6b_otherInsurance_details" rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea></div>
       </div>
-      <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-firm-mid transition-colors mt-4" data-upload="s6_files"><input type="file" multiple class="hidden" id="upload_s6" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls"><label for="upload_s6" class="cursor-pointer"><p class="text-sm text-gray-600">Drag &amp; drop insurance documents or <span class="text-firm-mid font-medium">browse</span></p></label><div class="file-list mt-3 space-y-1"></div><p class="text-xs text-gray-500 mt-1 text-center">Uploaded documents will be automatically saved to your shared Dropbox folder.</p></div>
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800 mt-4">Please upload insurance documents directly to your shared Dropbox folder (Bergeron &gt; Intake Responses). If you need help accessing the folder, contact your attorney.</div>
 
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes or Comments</label>
@@ -532,7 +522,7 @@ async function unlockForm() {
         <div><label class="block text-sm font-medium text-gray-700 mb-2">How have you filed taxes during the marriage?</label><div class="flex flex-wrap gap-4"><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s7a_taxFiling" value="Jointly" class="mr-2"> Jointly</label><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s7a_taxFiling" value="Separately" class="mr-2"> Separately</label><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s7a_taxFiling" value="Mixed" class="mr-2"> Mixed</label></div></div>
         <div><label class="block text-sm font-medium text-gray-700 mb-2">Any pending tax dispute, audit, or installment plan?</label><div class="flex gap-6"><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s7a_taxDispute" value="Yes" class="mr-2"> Yes</label><label class="inline-flex items-center cursor-pointer"><input type="radio" name="s7a_taxDispute" value="No" class="mr-2"> No</label></div><div data-conditional data-show-when="s7a_taxDispute" data-show-value="Yes" class="mt-2"><textarea name="s7a_taxDispute_desc" rows="2" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Describe"></textarea></div></div>
       </div>
-      <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-firm-mid transition-colors mt-4" data-upload="s7_files"><input type="file" multiple class="hidden" id="upload_s7" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls"><label for="upload_s7" class="cursor-pointer"><p class="text-sm text-gray-600">Drag &amp; drop debt/tax statements or <span class="text-firm-mid font-medium">browse</span></p></label><div class="file-list mt-3 space-y-1"></div><p class="text-xs text-gray-500 mt-1 text-center">Uploaded documents will be automatically saved to your shared Dropbox folder.</p></div>
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800 mt-4">Please upload debt and tax statements directly to your shared Dropbox folder (Bergeron &gt; Intake Responses). If you need help accessing the folder, contact your attorney.</div>
 
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes or Comments</label>
@@ -584,18 +574,7 @@ async function unlockForm() {
           placeholder="Example: Business ownership interest — founded before marriage on 01/10/2017. Investment account #XXXX — premarital funds, no community contributions."></textarea>
       </div>
 
-      <!-- File Upload -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Supporting Documentation (deeds, account statements, inheritance records):</label>
-        <div class="file-upload-area border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors cursor-pointer" data-upload="separate_property_docs">
-          <svg class="mx-auto h-10 w-10 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-          <p class="text-sm text-gray-600">Drag &amp; drop files here, or <span class="text-blue-600 font-medium">click to browse</span></p>
-          <p class="text-xs text-gray-400 mt-1">PDF, DOC, DOCX, JPG, PNG, XLS, XLSX &mdash; Max 25 MB per file</p>
-          <input type="file" class="hidden" name="separate_property_files" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls">
-          <p class="text-xs text-gray-500 mt-1 text-center">Uploaded documents will be automatically saved to your shared Dropbox folder.</p>
-        </div>
-        <div class="file-list mt-2 space-y-1" data-list="separate_property_docs"></div>
-      </div>
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">Please upload supporting documentation (deeds, account statements, inheritance records) directly to your shared Dropbox folder (Bergeron &gt; Intake Responses). If you need help accessing the folder, contact your attorney.</div>
 
     </div>
   </div>
@@ -721,18 +700,7 @@ async function unlockForm() {
           placeholder="e.g., 2022 BMW X5 to Karen as separate property. 2021 Ford F-150 to Michael as separate property. Household furnishings per attached inventory list..."></textarea>
       </div>
 
-      <!-- File Upload -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Supporting Documentation for Proposed Division:</label>
-        <div class="file-upload-area border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors cursor-pointer" data-upload="division_docs">
-          <svg class="mx-auto h-10 w-10 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-          <p class="text-sm text-gray-600">Drag &amp; drop files here, or <span class="text-blue-600 font-medium">click to browse</span></p>
-          <p class="text-xs text-gray-400 mt-1">PDF, DOC, DOCX, JPG, PNG, XLS, XLSX &mdash; Max 25 MB per file</p>
-          <input type="file" class="hidden" name="division_files" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls">
-          <p class="text-xs text-gray-500 mt-1 text-center">Uploaded documents will be automatically saved to your shared Dropbox folder.</p>
-        </div>
-        <div class="file-list mt-2 space-y-1" data-list="division_docs"></div>
-      </div>
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">Please upload supporting documentation for the proposed division directly to your shared Dropbox folder (Bergeron &gt; Intake Responses). If you need help accessing the folder, contact your attorney.</div>
 
     </div>
   </div>
@@ -1339,26 +1307,18 @@ async function unlockForm() {
       </div>
 
       <div class="bg-amber-50 border-l-4 border-amber-500 p-4 text-sm text-amber-800 mt-4">
-        You do not need to have every document before submitting this questionnaire. Upload what you have now and provide additional documents as they become available. Documents uploaded here will be automatically saved to your shared Dropbox folder.
+        You do not need to have every document before submitting this questionnaire. Gather what you can and provide additional documents as they become available.
       </div>
 
-      <!-- File Upload Area -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Upload All Documents:</label>
-        <div class="file-upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors cursor-pointer" data-upload="dropbox_documents">
-          <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-          <p class="text-base text-gray-600 font-medium">Drag &amp; drop files here, or <span class="text-blue-600">click to browse</span></p>
-          <p class="text-xs text-gray-400 mt-2">PDF, DOC, DOCX, JPG, PNG, XLS, XLSX &mdash; Max 25 MB per file &mdash; Multiple files allowed</p>
-          <input type="file" class="hidden" name="dropbox_files" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls">
-        </div>
-        <div class="file-list mt-2 space-y-1" data-list="dropbox_documents"></div>
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">
+        Please upload all documents directly to your shared Dropbox folder (Bergeron &gt; Intake Responses). If you need help accessing the folder, contact your attorney.
       </div>
 
       <!-- Dropbox Link Reminder -->
       <div class="bg-[#1e3a5f] text-white rounded-lg p-5 text-center">
         <svg class="mx-auto h-8 w-8 mb-2 opacity-80" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L6 6.5l6 4.5 6-4.5L12 2zM6 11l6 4.5 6-4.5-6-4.5L6 11zm6 5.5L6 12v.5l6 4.5 6-4.5V12l-6 4.5z"/></svg>
         <p class="font-semibold text-lg mb-1">Shared Dropbox Folder</p>
-        <p class="text-sm text-blue-200">You can also upload documents directly to the shared Dropbox folder provided by The Talley Law Firm. Check your email for the Dropbox folder invitation link.</p>
+        <p class="text-sm text-blue-200">Upload documents directly to the shared Dropbox folder provided by The Talley Law Firm. Check your email for the Dropbox folder invitation link.</p>
       </div>
 
     </div>
@@ -1538,7 +1498,6 @@ const CONFIG = {
    =================================================================== */
 let currentStep = 1;
 let formToken = null;
-let uploadedFiles = {};
 let autoSaveTimer = null;
 
 /* ===================================================================
@@ -1578,9 +1537,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Initialize conditional field logic
   initConditionalFields();
-
-  // Initialize file upload areas
-  initFileUploads();
 
   // Initialize dynamic table row buttons
   initDynamicRows();
@@ -1769,7 +1725,6 @@ function collectFormData() {
       }
       data[name] = selected;
     } else if (el.type === 'file') {
-      // Files handled separately via uploadedFiles
       continue;
     } else {
       if (el.value) data[name] = el.value;
@@ -1881,19 +1836,6 @@ function saveProgress(isFinal) {
   const clientName = clientNameEl ? clientNameEl.value : '';
   const spouseName = spouseNameEl ? spouseNameEl.value : '';
 
-  // Build file metadata
-  const filesMeta = [];
-  Object.keys(uploadedFiles).forEach(function (key) {
-    uploadedFiles[key].forEach(function (file) {
-      filesMeta.push({
-        fieldName: key,
-        fileName: file.name,
-        fileSize: file.size,
-        fileType: file.type
-      });
-    });
-  });
-
   const payload = {
     token: formToken,
     status: isFinal ? 'final' : 'draft',
@@ -1901,7 +1843,6 @@ function saveProgress(isFinal) {
     responses: responses,
     clientName: clientName,
     spouseName: spouseName,
-    files: filesMeta,
     submittedAt: isFinal ? new Date().toISOString() : null,
     userAgent: navigator.userAgent
   };
@@ -1944,24 +1885,6 @@ function saveProgress(isFinal) {
     }
   });
 
-  // Upload files if any
-  uploadFilesToWebhook(payload);
-}
-
-function uploadFilesToWebhook(payload) {
-  Object.keys(uploadedFiles).forEach(function (key) {
-    uploadedFiles[key].forEach(function (fileObj) {
-      if (fileObj.base64) {
-        // File already encoded, included in next save
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        fileObj.base64 = e.target.result;
-      };
-      reader.readAsDataURL(fileObj.file || fileObj);
-    });
-  });
 }
 
 function submitForm() {
@@ -2086,144 +2009,6 @@ function populateForm(responses) {
 
   // Re-evaluate conditionals after populating
   evaluateConditionals();
-}
-
-/* ===================================================================
-   9. FILE UPLOAD HANDLING
-   =================================================================== */
-function initFileUploads() {
-  const uploadAreas = document.querySelectorAll('.file-upload-area');
-
-  uploadAreas.forEach(function (area) {
-    const uploadKey = area.getAttribute('data-upload');
-    const fileInput = area.querySelector('input[type="file"]');
-    const fileList = document.querySelector('[data-list="' + uploadKey + '"]');
-
-    if (!uploadKey || !fileInput) return;
-
-    // Initialize storage
-    if (!uploadedFiles[uploadKey]) uploadedFiles[uploadKey] = [];
-
-    // Click to browse
-    area.addEventListener('click', function (e) {
-      if (e.target.tagName !== 'INPUT') {
-        fileInput.click();
-      }
-    });
-
-    // File input change
-    fileInput.addEventListener('change', function () {
-      handleFiles(this.files, uploadKey, fileList);
-      this.value = ''; // reset so same file can be re-selected
-    });
-
-    // Drag and drop
-    area.addEventListener('dragover', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      area.classList.add('border-blue-400', 'bg-blue-50');
-    });
-
-    area.addEventListener('dragleave', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      area.classList.remove('border-blue-400', 'bg-blue-50');
-    });
-
-    area.addEventListener('drop', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      area.classList.remove('border-blue-400', 'bg-blue-50');
-      handleFiles(e.dataTransfer.files, uploadKey, fileList);
-    });
-  });
-}
-
-function handleFiles(files, uploadKey, fileListEl) {
-  if (!files || files.length === 0) return;
-
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-
-    // Validate file size
-    if (file.size > CONFIG.maxFileSize) {
-      showToast('File "' + file.name + '" exceeds the 25 MB limit.', 'error');
-      continue;
-    }
-
-    // Validate file type
-    const ext = '.' + file.name.split('.').pop().toLowerCase();
-    if (CONFIG.allowedFileTypes.indexOf(ext) === -1) {
-      showToast('File type "' + ext + '" is not allowed.', 'error');
-      continue;
-    }
-
-    // Store file reference
-    const fileObj = {
-      file: file,
-      name: file.name,
-      size: file.size,
-      type: file.type,
-      base64: null
-    };
-
-    // Read as base64
-    (function (fo) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        fo.base64 = e.target.result;
-      };
-      reader.readAsDataURL(fo.file);
-    })(fileObj);
-
-    uploadedFiles[uploadKey].push(fileObj);
-  }
-
-  // Refresh file list display
-  renderFileList(uploadKey, fileListEl);
-}
-
-function renderFileList(uploadKey, fileListEl) {
-  if (!fileListEl) return;
-  fileListEl.innerHTML = '';
-
-  uploadedFiles[uploadKey].forEach(function (fileObj, idx) {
-    const div = document.createElement('div');
-    div.className = 'flex items-center justify-between bg-gray-50 rounded px-3 py-2 text-sm';
-
-    const sizeStr = formatFileSize(fileObj.size);
-
-    div.innerHTML =
-      '<div class="flex items-center gap-2">' +
-        '<svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>' +
-        '<span class="text-gray-700">' + escapeHtml(fileObj.name) + '</span>' +
-        '<span class="text-gray-400">(' + sizeStr + ')</span>' +
-      '</div>' +
-      '<button type="button" class="text-red-500 hover:text-red-700 text-xs font-medium" data-remove="' + idx + '">' +
-        'Remove' +
-      '</button>';
-
-    div.querySelector('[data-remove]').addEventListener('click', function () {
-      uploadedFiles[uploadKey].splice(idx, 1);
-      renderFileList(uploadKey, fileListEl);
-    });
-
-    fileListEl.appendChild(div);
-  });
-}
-
-function formatFileSize(bytes) {
-  if (bytes === 0) return '0 B';
-  const k = 1024;
-  const sizes = ['B', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
-}
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.appendChild(document.createTextNode(text));
-  return div.innerHTML;
 }
 
 /* ===================================================================
