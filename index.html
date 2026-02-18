@@ -122,6 +122,50 @@ async function unlockForm() {
   </div>
 </div>
 
+<!-- SECTION NAVIGATION -->
+<div class="no-print mb-4" id="section-nav">
+  <!-- Desktop: numbered circles with First/Last -->
+  <div class="hidden sm:flex items-center justify-center gap-1 flex-wrap" id="section-nav-desktop">
+    <button type="button" onclick="goToStep(1)" class="text-xs text-gray-500 hover:text-[#1e3a5f] underline mr-2" title="Jump to Section 1">&laquo; First</button>
+    <button type="button" onclick="goToStep(1)" data-nav-step="1" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-[#1e3a5f] bg-[#1e3a5f] text-white transition-all hover:bg-[#2c5282] hover:border-[#2c5282]" title="General Information">1</button>
+    <button type="button" onclick="goToStep(2)" data-nav-step="2" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Real Property">2</button>
+    <button type="button" onclick="goToStep(3)" data-nav-step="3" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Business Interests">3</button>
+    <button type="button" onclick="goToStep(4)" data-nav-step="4" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Financial Accounts">4</button>
+    <button type="button" onclick="goToStep(5)" data-nav-step="5" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Vehicles &amp; Personal Property">5</button>
+    <button type="button" onclick="goToStep(6)" data-nav-step="6" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Insurance Policies">6</button>
+    <button type="button" onclick="goToStep(7)" data-nav-step="7" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Debts &amp; Liabilities">7</button>
+    <button type="button" onclick="goToStep(8)" data-nav-step="8" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Separate Property Claims">8</button>
+    <button type="button" onclick="goToStep(9)" data-nav-step="9" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Proposed Division">9</button>
+    <button type="button" onclick="goToStep(10)" data-nav-step="10" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Comments for Attorney">10</button>
+    <button type="button" onclick="goToStep(11)" data-nav-step="11" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Income &amp; Earnings">11</button>
+    <button type="button" onclick="goToStep(12)" data-nav-step="12" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Spousal Maintenance">12</button>
+    <button type="button" onclick="goToStep(13)" data-nav-step="13" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Additional Provisions">13</button>
+    <button type="button" onclick="goToStep(14)" data-nav-step="14" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Documents">14</button>
+    <button type="button" onclick="goToStep(15)" data-nav-step="15" class="section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]" title="Certification">15</button>
+    <button type="button" onclick="goToStep(CONFIG.totalSteps)" class="text-xs text-gray-500 hover:text-[#1e3a5f] underline ml-2" title="Jump to Section 15">Last &raquo;</button>
+  </div>
+  <!-- Mobile: dropdown select -->
+  <div class="sm:hidden">
+    <select id="section-nav-mobile" onchange="goToStep(parseInt(this.value))" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+      <option value="1">1. General Information</option>
+      <option value="2">2. Real Property</option>
+      <option value="3">3. Business Interests</option>
+      <option value="4">4. Financial Accounts</option>
+      <option value="5">5. Vehicles &amp; Personal Property</option>
+      <option value="6">6. Insurance Policies</option>
+      <option value="7">7. Debts &amp; Liabilities</option>
+      <option value="8">8. Separate Property Claims</option>
+      <option value="9">9. Proposed Division</option>
+      <option value="10">10. Comments for Attorney</option>
+      <option value="11">11. Income &amp; Earnings</option>
+      <option value="12">12. Spousal Maintenance</option>
+      <option value="13">13. Additional Provisions</option>
+      <option value="14">14. Documents</option>
+      <option value="15">15. Certification</option>
+    </select>
+  </div>
+</div>
+
 <!-- FORM -->
 <form id="intake-form" novalidate>
 
@@ -209,7 +253,7 @@ async function unlockForm() {
       </div>
     </div>
   </div>
-  <div class="flex justify-between items-center"><div></div><div class="flex gap-3"><button type="button" onclick="saveProgress()" class="border border-firm-dark text-firm-dark hover:bg-blue-50 px-4 py-2 rounded-md text-sm">Save Progress</button><button type="button" onclick="nextStep()" class="bg-firm-dark hover:bg-firm-mid text-white px-6 py-2 rounded-md">Next &rarr;</button></div></div>
+  <div class="flex justify-between items-center"><div><button type="button" onclick="goToStep(CONFIG.totalSteps)" class="text-sm text-gray-500 hover:text-[#1e3a5f] underline">Jump to Last Section &rarr;</button></div><div class="flex gap-3"><button type="button" onclick="saveProgress()" class="border border-firm-dark text-firm-dark hover:bg-blue-50 px-4 py-2 rounded-md text-sm">Save Progress</button><button type="button" onclick="nextStep()" class="bg-firm-dark hover:bg-firm-mid text-white px-6 py-2 rounded-md">Next &rarr;</button></div></div>
 </div>
 
 <!-- ================================================================== -->
@@ -220,6 +264,7 @@ async function unlockForm() {
     <div class="bg-firm-dark text-white px-6 py-3 font-bold text-lg">Section 2: Real Property</div>
     <div class="p-6 space-y-6">
       <p class="text-sm text-gray-600 italic">List ALL real property owned by either or both spouses, including out-of-state property.</p>
+      <p class="text-sm text-gray-500 italic mt-1">For each asset or debt, indicate whether you believe it is separate or community property. If you&rsquo;re unsure, leave it blank and we&rsquo;ll discuss.</p>
       <h3 class="text-firm-mid font-semibold text-base border-b border-gray-200 pb-2 mb-4">Property #1 — Louisiana Residence</h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Street Address</label><input type="text" name="s2_p1_streetAddress" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></div>
@@ -322,6 +367,7 @@ async function unlockForm() {
     <div class="bg-firm-dark text-white px-6 py-3 font-bold text-lg">Section 4: Financial Accounts</div>
     <div class="p-6 space-y-6">
       <p class="text-sm text-gray-600 italic">List ALL bank, investment, and retirement accounts for both spouses.</p>
+      <p class="text-sm text-gray-500 italic mt-1">For each asset or debt, indicate whether you believe it is separate or community property. If you&rsquo;re unsure, leave it blank and we&rsquo;ll discuss.</p>
       <h3 class="text-firm-mid font-semibold text-base border-b border-gray-200 pb-2 mb-4">4A. Bank Accounts (Checking, Savings, CDs, Money Market)</h3>
       <p class="text-xs text-gray-500 mb-2">List every account. For joint accounts, note both names.</p>
       <div class="overflow-x-auto"><table class="w-full text-sm" id="table_bankAccounts" data-table="table_bankAccounts"><thead><tr class="bg-gray-100"><th class="px-2 py-2 text-left">Institution</th><th class="px-2 py-2 text-left">Account Type</th><th class="px-2 py-2 text-left">Owner(s)</th><th class="px-2 py-2 text-left">Approx. Balance</th><th class="px-2 py-2 text-left">Date Opened</th><th class="px-2 py-2 text-left">Sep/Comm?</th></tr></thead><tbody>
@@ -381,6 +427,7 @@ async function unlockForm() {
   <div class="bg-white shadow-md rounded-lg overflow-hidden mb-6">
     <div class="bg-firm-dark text-white px-6 py-3 font-bold text-lg">Section 5: Vehicles &amp; Personal Property</div>
     <div class="p-6 space-y-6">
+      <p class="text-sm text-gray-500 italic">For each asset, indicate whether you believe it is separate or community property. If you&rsquo;re unsure, leave it blank and we&rsquo;ll discuss.</p>
       <h3 class="text-firm-mid font-semibold text-base border-b border-gray-200 pb-2 mb-4">5A. Vehicles (Cars, Trucks, Boats, RVs, Trailers, ATVs)</h3>
       <div class="overflow-x-auto"><table class="w-full text-sm" id="table_vehicles" data-table="table_vehicles"><thead><tr class="bg-gray-100"><th class="px-2 py-2 text-left">Year/Make/Model</th><th class="px-2 py-2 text-left">VIN</th><th class="px-2 py-2 text-left">Title in Name of</th><th class="px-2 py-2 text-left">Value</th><th class="px-2 py-2 text-left">Loan Bal.</th><th class="px-2 py-2 text-left">Sep/Comm</th></tr></thead><tbody>
         <tr class="border-b"><td class="px-1 py-1"><input type="text" name="s5a_veh_1_ymm" class="w-full border rounded px-2 py-1 text-sm"></td><td class="px-1 py-1"><input type="text" name="s5a_veh_1_vin" class="w-full border rounded px-2 py-1 text-sm"></td><td class="px-1 py-1"><input type="text" name="s5a_veh_1_title" class="w-full border rounded px-2 py-1 text-sm"></td><td class="px-1 py-1"><div class="relative"><span class="absolute left-3 top-1 text-gray-500 text-xs">$</span><input type="text" name="s5a_veh_1_value" class="w-full border rounded pl-5 pr-2 py-1 text-sm"></div></td><td class="px-1 py-1"><div class="relative"><span class="absolute left-3 top-1 text-gray-500 text-xs">$</span><input type="text" name="s5a_veh_1_loanBal" class="w-full border rounded pl-5 pr-2 py-1 text-sm"></div></td><td class="px-1 py-1"><input type="text" name="s5a_veh_1_sepComm" class="w-full border rounded px-2 py-1 text-sm"></td></tr>
@@ -462,6 +509,7 @@ async function unlockForm() {
     <div class="bg-firm-dark text-white px-6 py-3 font-bold text-lg">Section 7: Debts &amp; Liabilities</div>
     <div class="p-6 space-y-6">
       <p class="text-sm text-gray-600 italic">List ALL debts owed by either or both spouses.</p>
+      <p class="text-sm text-gray-500 italic mt-1">For each debt, indicate whether you believe it is separate or community. If you&rsquo;re unsure, leave it blank and we&rsquo;ll discuss.</p>
       <div class="overflow-x-auto"><table class="w-full text-sm" id="table_debts" data-table="table_debts"><thead><tr class="bg-gray-100"><th class="px-2 py-2 text-left">Creditor</th><th class="px-2 py-2 text-left">Acct # (last 4)</th><th class="px-2 py-2 text-left">Type of Debt</th><th class="px-2 py-2 text-left">Date Incurred</th><th class="px-2 py-2 text-left">Whose Name</th><th class="px-2 py-2 text-left">Balance Owed</th><th class="px-2 py-2 text-left">Interest Rate</th><th class="px-2 py-2 text-left">Monthly Pmt</th><th class="px-2 py-2 text-left">Co-Signer / Guarantor</th><th class="px-2 py-2 text-left">Sep/Comm</th><th class="px-2 py-2 text-left">Secured?</th></tr></thead><tbody>
         <tr class="border-b"><td class="px-1 py-1"><input type="text" name="s7_debt_1_creditor" class="w-full border rounded px-2 py-1 text-sm"></td><td class="px-1 py-1"><input type="text" name="s7_debt_1_acctNum" class="w-full border rounded px-2 py-1 text-sm" maxlength="4" placeholder="Last 4"></td><td class="px-1 py-1"><input type="text" name="s7_debt_1_type" class="w-full border rounded px-2 py-1 text-sm"></td><td class="px-1 py-1"><input type="date" name="s7_debt_1_dateIncurred" class="w-full border rounded px-1 py-1 text-sm"></td><td class="px-1 py-1"><input type="text" name="s7_debt_1_whose" class="w-full border rounded px-2 py-1 text-sm"></td><td class="px-1 py-1"><div class="relative"><span class="absolute left-3 top-1 text-gray-500 text-xs">$</span><input type="text" name="s7_debt_1_balance" class="w-full border rounded pl-5 pr-2 py-1 text-sm"></div></td><td class="px-1 py-1"><div class="relative"><input type="text" name="s7_debt_1_rate" class="w-full border rounded px-2 pr-5 py-1 text-sm"><span class="absolute right-2 top-1 text-gray-500 text-xs">%</span></div></td><td class="px-1 py-1"><div class="relative"><span class="absolute left-3 top-1 text-gray-500 text-xs">$</span><input type="text" name="s7_debt_1_monthlyPmt" class="w-full border rounded pl-5 pr-2 py-1 text-sm"></div></td><td class="px-1 py-1"><input type="text" name="s7_debt_1_cosigner" class="w-full border rounded px-2 py-1 text-sm"></td><td class="px-1 py-1"><input type="text" name="s7_debt_1_sepComm" class="w-full border rounded px-2 py-1 text-sm"></td><td class="px-1 py-1"><input type="text" name="s7_debt_1_secured" class="w-full border rounded px-2 py-1 text-sm" placeholder="e.g., House, Vehicle"></td></tr>
         <tr class="border-b"><td class="px-1 py-1"><input type="text" name="s7_debt_2_creditor" class="w-full border rounded px-2 py-1 text-sm"></td><td class="px-1 py-1"><input type="text" name="s7_debt_2_acctNum" class="w-full border rounded px-2 py-1 text-sm" maxlength="4" placeholder="Last 4"></td><td class="px-1 py-1"><input type="text" name="s7_debt_2_type" class="w-full border rounded px-2 py-1 text-sm"></td><td class="px-1 py-1"><input type="date" name="s7_debt_2_dateIncurred" class="w-full border rounded px-1 py-1 text-sm"></td><td class="px-1 py-1"><input type="text" name="s7_debt_2_whose" class="w-full border rounded px-2 py-1 text-sm"></td><td class="px-1 py-1"><div class="relative"><span class="absolute left-3 top-1 text-gray-500 text-xs">$</span><input type="text" name="s7_debt_2_balance" class="w-full border rounded pl-5 pr-2 py-1 text-sm"></div></td><td class="px-1 py-1"><div class="relative"><input type="text" name="s7_debt_2_rate" class="w-full border rounded px-2 pr-5 py-1 text-sm"><span class="absolute right-2 top-1 text-gray-500 text-xs">%</span></div></td><td class="px-1 py-1"><div class="relative"><span class="absolute left-3 top-1 text-gray-500 text-xs">$</span><input type="text" name="s7_debt_2_monthlyPmt" class="w-full border rounded pl-5 pr-2 py-1 text-sm"></div></td><td class="px-1 py-1"><input type="text" name="s7_debt_2_cosigner" class="w-full border rounded px-2 py-1 text-sm"></td><td class="px-1 py-1"><input type="text" name="s7_debt_2_sepComm" class="w-full border rounded px-2 py-1 text-sm"></td><td class="px-1 py-1"><input type="text" name="s7_debt_2_secured" class="w-full border rounded px-2 py-1 text-sm" placeholder="e.g., House, Vehicle"></td></tr>
@@ -755,6 +803,8 @@ async function unlockForm() {
       <div class="bg-amber-50 border-l-4 border-amber-500 p-4 text-sm text-amber-800">
         <strong>Critical Decision:</strong> How future income is characterized &mdash; as community or separate property &mdash; is one of the most consequential provisions in a marital property agreement. Texas law presumes all income earned during marriage is community property. Changing this default requires clear, specific agreement.
       </div>
+
+      <p class="text-sm text-gray-500 italic">For each income source, indicate how you believe it should be characterized. If you&rsquo;re unsure, leave it blank and we&rsquo;ll discuss.</p>
 
       <!-- 11A. Current Income — Karen -->
       <div>
@@ -1441,9 +1491,9 @@ async function unlockForm() {
 
             <div class="text-center text-sm text-gray-600 pt-4 border-t border-gray-200">
               <p class="font-medium">The Talley Law Firm PLLC</p>
-              <p>4310 Westheimer Road, Suite 206</p>
-              <p>Houston, Texas 77027</p>
-              <p class="mt-1">(713) 521-3600</p>
+              <p>1506 E. Winding Way Drive, Suite 103</p>
+              <p>Friendswood, Texas 77546</p>
+              <p class="mt-1">(832) 889-3229</p>
             </div>
           </div>
         </div>
@@ -1462,7 +1512,7 @@ async function unlockForm() {
     <!-- ============================================================ -->
     <footer class="bg-[#1e3a5f] text-white text-center py-4 mt-8 text-sm">
       <p>CONFIDENTIAL &mdash; The Talley Law Firm PLLC &mdash; All Rights Reserved</p>
-      <p class="text-gray-400 text-xs mt-1">4310 Westheimer Road, Suite 206, Houston, Texas 77027 &middot; (713) 521-3600</p>
+      <p class="text-gray-400 text-xs mt-1">1506 E. Winding Way Drive, Suite 103, Friendswood, Texas 77546 &middot; (832) 889-3229</p>
     </footer>
 
 
@@ -1569,8 +1619,16 @@ function showStep(n) {
   // Update progress bar
   updateProgressBar();
 
+  // Update section navigation highlighting
+  updateSectionNav();
+
   // Scroll to top
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goToStep(n) {
+  // Direct jump — no validation, just navigate
+  showStep(n);
 }
 
 function nextStep() {
@@ -1597,6 +1655,25 @@ function updateProgressBar() {
 
   if (progressText) {
     progressText.textContent = 'Step ' + currentStep + ' of ' + CONFIG.totalSteps;
+  }
+}
+
+function updateSectionNav() {
+  // Desktop nav buttons
+  var btns = document.querySelectorAll('.section-nav-btn');
+  btns.forEach(function (btn) {
+    var step = parseInt(btn.getAttribute('data-nav-step'));
+    if (step === currentStep) {
+      btn.className = 'section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-[#1e3a5f] bg-[#1e3a5f] text-white transition-all hover:bg-[#2c5282] hover:border-[#2c5282]';
+    } else {
+      btn.className = 'section-nav-btn w-8 h-8 rounded-full text-xs font-bold border-2 border-gray-300 text-gray-500 bg-white transition-all hover:border-[#2c5282] hover:text-[#2c5282]';
+    }
+  });
+
+  // Mobile select
+  var mobileSelect = document.getElementById('section-nav-mobile');
+  if (mobileSelect) {
+    mobileSelect.value = currentStep;
   }
 }
 
